@@ -1,0 +1,9 @@
+import type { InputHTMLAttributes, SelectHTMLAttributes } from "react";
+
+export const fieldClass = "min-h-11 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-base text-[var(--text)] shadow-sm outline-none transition placeholder:text-[var(--text-subtle)] hover:border-[var(--border-strong)] focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--focus-soft)] disabled:bg-[var(--surface-muted)] disabled:text-[var(--text-subtle)]";
+export function Input({ className = "", ...props }: InputHTMLAttributes<HTMLInputElement>) { return <input className={`${fieldClass} ${className}`} {...props} />; }
+export function Select({ className = "", ...props }: SelectHTMLAttributes<HTMLSelectElement>) { return <select className={`${fieldClass} ${className}`} {...props} />; }
+export function DatePicker(props: InputHTMLAttributes<HTMLInputElement>) { return <Input type="date" {...props} />; }
+export function MoneyInput(props: InputHTMLAttributes<HTMLInputElement>) { return <Input inputMode="decimal" placeholder="0.00" {...props} />; }
+export function Search(props: InputHTMLAttributes<HTMLInputElement>) { return <div className="relative"><span aria-hidden className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-subtle)]">⌕</span><Input type="search" className="pl-10" {...props} /></div>; }
+export function Field({ label, htmlFor, hint, error, children }: Readonly<{ label: string; htmlFor: string; hint?: string; error?: string | null; children: React.ReactNode }>) { return <div><label htmlFor={htmlFor} className="mb-2 block text-sm font-semibold text-[var(--text)]">{label}</label>{children}{hint ? <p className="mt-1.5 text-xs leading-5 text-[var(--text-muted)]">{hint}</p> : null}{error ? <p role="alert" className="mt-1.5 text-sm text-[var(--danger)]">{error}</p> : null}</div>; }

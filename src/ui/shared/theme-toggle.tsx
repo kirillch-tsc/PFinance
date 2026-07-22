@@ -1,0 +1,4 @@
+"use client";
+import { useEffect, useState } from "react";
+import { Button, Tooltip } from "@/src/ui/system";
+export function ThemeToggle() { const [dark, setDark] = useState(false); useEffect(() => { void Promise.resolve().then(() => { const stored = localStorage.getItem("pfinance-theme"); const enabled = stored ? stored === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches; document.documentElement.classList.toggle("dark", enabled); setDark(enabled); }); }, []); function toggle() { const next = !dark; setDark(next); document.documentElement.classList.toggle("dark", next); localStorage.setItem("pfinance-theme", next ? "dark" : "light"); } return <Tooltip label={dark ? "Светлая тема" : "Тёмная тема"}><Button variant="ghost" onClick={toggle} aria-label={dark ? "Включить светлую тему" : "Включить тёмную тему"} className="size-11 px-0 text-lg">{dark ? "☀" : "☾"}</Button></Tooltip>; }

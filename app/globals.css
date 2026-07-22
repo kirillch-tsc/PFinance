@@ -1,22 +1,92 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   color-scheme: light;
+  --background: #f4f7f5;
+  --surface: #ffffff;
+  --surface-muted: #eef3f0;
+  --border: #dce6e1;
+  --border-strong: #b9cbc2;
+  --text: #14231d;
+  --text-muted: #607169;
+  --text-subtle: #89978f;
+  --accent: #08775a;
+  --accent-hover: #056248;
+  --accent-soft: #dff3eb;
+  --success: #08775a;
+  --success-soft: #dff3eb;
+  --warning: #9a5b06;
+  --warning-soft: #fff1d6;
+  --danger: #b42332;
+  --danger-soft: #ffeaec;
+  --danger-border: #f2bdc4;
+  --focus: #0a8d6b;
+  --focus-soft: rgb(10 141 107 / 16%);
+  --shadow-card: 0 1px 2px rgb(20 35 29 / 4%), 0 8px 24px rgb(20 35 29 / 4%);
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
 }
 
-* {
-  box-sizing: border-box;
+:root.dark {
+  color-scheme: dark;
+  --background: #0f1714;
+  --surface: #17211d;
+  --surface-muted: #202d28;
+  --border: #2b3c35;
+  --border-strong: #41564d;
+  --text: #eef6f2;
+  --text-muted: #a8b8b0;
+  --text-subtle: #7f9188;
+  --accent: #42c69b;
+  --accent-hover: #58d5aa;
+  --accent-soft: #173c30;
+  --success: #55d4a9;
+  --success-soft: #173c30;
+  --warning: #f0bd68;
+  --warning-soft: #3d301a;
+  --danger: #ff929e;
+  --danger-soft: #442229;
+  --danger-border: #69313b;
+  --focus: #55d4a9;
+  --focus-soft: rgb(85 212 169 / 18%);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 20%), 0 12px 32px rgb(0 0 0 / 14%);
 }
 
-html {
-  background: #f1f5f2;
-}
+* { box-sizing: border-box; }
+html { background: var(--background); }
+body { min-height: 100dvh; margin: 0; background: var(--background); color: var(--text); font-family: Arial, Helvetica, sans-serif; font-size: 1rem; line-height: 1.5; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, p { margin-block-start: 0; }
+h1 { font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.15; letter-spacing: -.03em; }
+h2 { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.25; letter-spacing: -.02em; }
+h3 { font-size: 1.0625rem; line-height: 1.35; }
+button, input, select, textarea { font: inherit; }
+::selection { background: var(--accent-soft); color: var(--text); }
 
-body {
-  margin: 0;
-  background:
-    radial-gradient(circle at 50% 0%, rgb(220 235 227 / 75%), transparent 42%),
-    #f1f5f2;
-  color: #12231d;
-  font-family: Arial, Helvetica, sans-serif;
-}
+.page-enter { animation: page-in .2s ease-out; }
+@keyframes page-in { from { opacity: 0; transform: translateY(4px); } }
+@keyframes ui-in { from { opacity: 0; transform: scale(.98) translateY(4px); } }
+@keyframes drawer-in { from { transform: translateX(100%); } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+
+/* Transitional compatibility for product screens moved onto the shared tokens. */
+.dark .bg-white { background-color: var(--surface) !important; }
+.dark .bg-white\/75, .dark .bg-white\/95 { background-color: color-mix(in srgb, var(--surface) 94%, transparent) !important; }
+.dark .bg-slate-100, .dark .bg-slate-200 { background-color: var(--surface-muted) !important; }
+.dark .bg-emerald-100 { background-color: var(--success-soft) !important; }
+.dark .bg-red-50 { background-color: var(--danger-soft) !important; }
+.dark .text-emerald-950 { color: var(--text) !important; }
+.dark .text-emerald-800, .dark .text-emerald-700 { color: var(--success) !important; }
+.dark .text-slate-500, .dark .text-slate-600, .dark .text-slate-700 { color: var(--text-muted) !important; }
+.dark .text-red-800, .dark .text-red-700 { color: var(--danger) !important; }
+.dark .border-emerald-950\/10, .dark .border-emerald-950\/15, .dark .border-emerald-950\/20 { border-color: var(--border) !important; }
+.dark .border-red-200 { border-color: var(--danger-border) !important; }

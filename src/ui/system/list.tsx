@@ -1,0 +1,3 @@
+import type { HTMLAttributes } from "react";
+export function ListSurface({ className = "", ...props }: HTMLAttributes<HTMLDivElement>) { return <div className={`overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-card)] ${className}`} {...props} />; }
+export function ListRow({ selected = false, className = "", ...props }: HTMLAttributes<HTMLDivElement> & { selected?: boolean }) { return <div data-selected={selected || undefined} className={`border-b border-[var(--border)] p-4 transition last:border-b-0 hover:bg-[var(--surface-muted)] data-[selected=true]:bg-[var(--accent-soft)] ${className}`} {...props} />; }
