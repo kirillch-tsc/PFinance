@@ -39,6 +39,11 @@ app/
   layout.tsx     корневой layout и metadata
   page.tsx       стартовая страница
 docs/
-  PRODUCT.md     назначение и границы продукта
-NEXT.md          план следующих этапов
+  ARCHITECTURE.md   техническая структура
+  DECISIONS.md      журнал принятых решений
+  PRODUCT.md        назначение и границы продукта
+  PROJECT_RULES.md  обязательные правила изменений
+  ROADMAP.md        единственный источник этапов
+  UI_REFERENCE.md   направление интерфейса
+NEXT.md          ближайшие рабочие задачи
 ```
