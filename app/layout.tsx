@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "PFinance — семейные финансы",
-  description: "Простой учёт доходов, расходов и бюджета для семьи.",
+  description: "Простое управление семейными финансами.",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
