@@ -1,11 +1,35 @@
+"use client";
+
 import Link from "next/link";
+import { useDashboardData } from "@/src/ui/home/use-dashboard-data";
 import { AppNavigation } from "./app-navigation";
-import { ThemeToggle } from "./theme-toggle";
-export function AppShell({ children }: Readonly<{ children: React.ReactNode }>) { return <div className="min-h-dvh bg-[var(--background)] text-[var(--text)]">
-  <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-[var(--border)] bg-[var(--surface)] px-4 py-6 lg:flex lg:flex-col"><Link href="/" className="flex items-center gap-3 px-2"><span className="grid size-10 place-items-center rounded-xl bg-[var(--accent)] text-lg font-bold text-white">P</span><span><strong className="block text-lg tracking-tight">PFinance</strong><small className="text-xs text-[var(--text-muted)]">Семейные финансы</small></span></Link><div className="mt-8"><AppNavigation variant="desktop" /></div><div className="mt-auto rounded-2xl bg-[var(--surface-muted)] p-4 text-xs leading-5 text-[var(--text-muted)]">Простой учёт без сложности таблиц.</div></aside>
-  <div className="lg:pl-64"><header className="sticky top-0 z-20 border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--background)_88%,transparent)] backdrop-blur-xl"><div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"><Link href="/" className="flex items-center gap-2 font-bold lg:hidden"><span className="grid size-8 place-items-center rounded-lg bg-[var(--accent)] text-white">P</span>PFinance</Link><div className="hidden lg:block"><p className="text-sm font-semibold text-[var(--text)]">Финансы семьи</p><p className="text-xs text-[var(--text-muted)]">Все изменения сохраняются в текущем сеансе</p></div><div className="flex items-center gap-2"><ThemeToggle /><Link href="/transactions/new" className="hidden min-h-11 items-center rounded-xl bg-[var(--accent)] px-4 text-sm font-semibold text-white transition hover:bg-[var(--accent-hover)] sm:inline-flex">＋ Добавить операцию</Link></div></div></header>
-    <main className="page-enter mx-auto min-h-[calc(100dvh-4rem)] w-full max-w-7xl px-4 py-6 pb-28 sm:px-6 sm:py-8 lg:px-8 lg:pb-10">{children}</main>
-  </div>
-  <Link href="/transactions/new" aria-label="Добавить операцию" className="fixed bottom-20 right-4 z-30 grid size-14 place-items-center rounded-2xl bg-[var(--accent)] text-3xl font-light text-white shadow-xl transition hover:-translate-y-0.5 hover:bg-[var(--accent-hover)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--focus)] sm:hidden">＋</Link>
-  <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--border)] bg-[color-mix(in_srgb,var(--surface)_94%,transparent)] px-2 pb-[max(.25rem,env(safe-area-inset-bottom))] backdrop-blur-xl lg:hidden"><AppNavigation variant="mobile" /></div>
-</div>; }
+
+export function AppShell({ children }: Readonly<{ children: React.ReactNode }>) {
+  const dashboard = useDashboardData();
+  return (
+    <div className="min-h-dvh bg-white text-[#101828]">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[235px] border-r border-[#edf1ef] bg-white px-[17.5px] py-[27.5px] lg:flex lg:flex-col">
+        <Link href="/" className="flex h-[55px] items-center gap-[15px] px-2.5 text-[22.5px] font-bold leading-none tracking-tight">
+          <span className="flex h-[32px] items-end gap-[3px]" aria-hidden><i className="h-[10px] w-[6.25px] rounded-sm bg-[#22a660]"/><i className="h-[20px] w-[6.25px] rounded-sm bg-[#22a660]"/><i className="h-[27.5px] w-[6.25px] rounded-sm bg-[#22a660]"/></span>
+          PFinance
+        </Link>
+        <div className="mt-[17.5px]"><AppNavigation variant="desktop" /></div>
+        <section className="mt-auto min-h-[189px] rounded-[15px] border border-[#e7e9ed] p-[17.5px] text-[13.75px] leading-[18px] shadow-[0_2px_10px_rgba(15,23,42,0.025)]">
+          <div className="mb-[15px] flex items-center justify-between"><strong className="font-semibold">Мои счета</strong><span className="text-[#98a2b3]">⌃</span></div>
+          {dashboard.account ? <div className="flex h-10 items-center justify-between gap-2.5"><span className="flex min-w-0 items-center gap-2.5"><i className="size-2.5 shrink-0 rounded-full bg-[#22a660]"/><span className="truncate">{dashboard.account.name}</span></span><b className="shrink-0">{formatSidebarMoney(dashboard.totalBalance)}</b></div> : null}
+          <div className="mt-2.5 flex h-[45px] items-center justify-between border-t border-[#eef0ef] pt-2.5"><span>Итого</span><b>{formatSidebarMoney(dashboard.totalBalance)}</b></div>
+        </section>
+        <div className="mt-5 flex h-[55px] items-center gap-[15px] rounded-[15px] border border-[#e7e9ed] px-[15px] text-[13.75px] leading-[18px] text-[#667085] shadow-[0_2px_10px_rgba(15,23,42,0.025)]"><span className="text-xl" aria-hidden>☼</span>Светлая тема</div>
+      </aside>
+
+      <main className="mx-auto min-h-dvh w-full max-w-[1440px] px-3 pb-20 sm:px-5 lg:mx-0 lg:ml-[190px] lg:w-[calc(100%-190px)] lg:px-4 lg:pb-0">{children}</main>
+
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[#e8ece9] bg-white px-2 pb-[max(.25rem,env(safe-area-inset-bottom))] lg:hidden"><AppNavigation variant="mobile" /></div>
+      <Link href="/transactions/new" aria-label="Добавить операцию" className="fixed bottom-20 right-4 z-30 grid size-13 place-items-center rounded-full bg-[#169653] text-2xl text-white shadow-md lg:hidden">＋</Link>
+    </div>
+  );
+}
+
+function formatSidebarMoney(units: bigint): string {
+  return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(Number(units / 100n))} ₽`;
+}

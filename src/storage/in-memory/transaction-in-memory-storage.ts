@@ -54,5 +54,8 @@ export class InMemoryTransactionStorage implements TransactionStorageContract {
 }
 
 function copyRecord(record: TransactionRecord): TransactionRecord {
-  return { ...record };
+  return {
+    ...record,
+    ...(record.importMetadata ? { importMetadata: { ...record.importMetadata } } : {}),
+  };
 }

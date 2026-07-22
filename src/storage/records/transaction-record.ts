@@ -4,6 +4,15 @@ type TransactionRecordBase = Readonly<{
   occurredAt: string;
   accountId: string;
   note: string | null;
+  importMetadata?: Readonly<{
+    sourceWorkbook: string;
+    sourceSheet: string;
+    sourceRow: number;
+    sourceRowId: string;
+    importGroupId?: string;
+    originalCategory: string | null;
+    dateWasImputed: boolean;
+  }>;
 }>;
 
 export type IncomeTransactionRecord = TransactionRecordBase &

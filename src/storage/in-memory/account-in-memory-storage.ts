@@ -63,5 +63,8 @@ export class InMemoryAccountStorage implements AccountStorageContract {
 }
 
 function copyRecord(record: AccountRecord): AccountRecord {
-  return { ...record };
+  return {
+    ...record,
+    ...(record.importMetadata ? { importMetadata: { ...record.importMetadata } } : {}),
+  };
 }

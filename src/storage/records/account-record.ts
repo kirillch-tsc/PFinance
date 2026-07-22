@@ -5,4 +5,8 @@ export type AccountRecord = Readonly<{
   openingBalance: string;
   openingBalanceDate: string;
   isActive: boolean;
+  importMetadata?: Readonly<{
+    sourceWorkbook: string;
+    accountType: "cash";
+  }>;
 }>;
