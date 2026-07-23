@@ -41,3 +41,9 @@ yarn-error.log*
 # typescript
 next-env.d.ts
 *.tsbuildinfo
+
+# sqlite database (see README.md — created by "npm run db:migrate")
+/data/*.db
+/data/*.db-*
+/data/backups/
+!/data/.gitkeep
