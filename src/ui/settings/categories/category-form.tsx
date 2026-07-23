@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import type { CategoryDraft } from "@/src/business/categories";
-import { Button, Field, Input, Select } from "@/src/ui/system";
 import { useUnsavedChanges } from "../use-unsaved-changes";
+import styles from "./categories.module.css";
 
 type CategoryFormProps = Readonly<{
   initialValue?: CategoryDraft;
@@ -47,9 +47,9 @@ export function CategoryForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-5">
-      <Field label="Название" htmlFor="category-name">
-        <Input
+    <form onSubmit={handleSubmit} noValidate className={styles.form}>
+      <FormField label="Название" htmlFor="category-name">
+        <input
           id="category-name"
           name="name"
           required
@@ -57,10 +57,10 @@ export function CategoryForm({
           value={draft.name}
           onChange={(event) => setDraft({ ...draft, name: event.target.value })}
         />
-      </Field>
+      </FormField>
 
-      <Field label="Тип" htmlFor="category-kind" hint={kindLocked ? "Тип нельзя изменить после появления связанных операций." : undefined}>
-        <Select
+      <FormField label="Тип" htmlFor="category-kind" hint={kindLocked ? "Тип нельзя изменить после появления связанных операций." : undefined}>
+        <select
           id="category-kind"
           name="kind"
           required
@@ -71,19 +71,20 @@ export function CategoryForm({
           <option value="">Выберите тип</option>
           <option value="income">Доход</option>
           <option value="expense">Расход</option>
-        </Select>
-      </Field>
+        </select>
+      </FormField>
 
-      {error ? <p role="alert" className="rounded-xl bg-[var(--danger-soft)] px-4 py-3 text-sm text-[var(--danger)]">{error}</p> : null}
+      {error ? <p role="alert" className={styles.error}>{error}</p> : null}
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <Link href={cancelHref} className="rounded-xl px-5 py-3 text-center text-sm font-semibold text-[var(--text-muted)]">
+      <div className={styles.formActions}>
+        <Link href={cancelHref}>
           Отмена
         </Link>
-        <Button type="submit" disabled={isSaving}>
+        <button type="submit" disabled={isSaving}>
           {isSaving ? "Сохранение…" : submitLabel}
-        </Button>
+        </button>
       </div>
     </form>
   );
 }
+function FormField({label,htmlFor,hint,children}:{label:string;htmlFor:string;hint?:string;children:React.ReactNode}){return <div className={styles.formField}><label htmlFor={htmlFor}>{label}</label>{children}{hint?<p>{hint}</p>:null}</div>}

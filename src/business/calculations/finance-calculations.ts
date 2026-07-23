@@ -20,6 +20,8 @@ export type BalancePoint = Readonly<{
   balance: MoneyUnits;
 }>;
 
+export type CashFlowPoint = Readonly<{ date: string; income: MoneyUnits; expense: MoneyUnits; cashFlow: MoneyUnits }>;
+
 export function moneyToUnits(value: string, fractionDigits = 2): MoneyUnits {
   const negative = value.startsWith("-");
   const unsigned = negative ? value.slice(1) : value;
@@ -107,6 +109,18 @@ export function calculateBalanceSeries(
   }
   if (points.at(-1)?.date !== periodEnd) points.push({ date: periodEnd, balance });
   return points;
+}
+
+export function calculateCashFlowSeries(transactions: readonly TransactionView[], periodStart: string, periodEnd: string): readonly CashFlowPoint[] {
+  const days = new Map<string, { income: bigint; expense: bigint }>();
+  for (const { transaction } of transactions) {
+    const date = transaction.occurredAt.slice(0, 10);
+    if (date < periodStart || date > periodEnd || transaction.type === "transfer") continue;
+    const current = days.get(date) ?? { income: 0n, expense: 0n };
+    const amount = moneyToUnits(transaction.amount);
+    days.set(date, transaction.type === "income" ? { ...current, income: current.income + amount } : { ...current, expense: current.expense + amount });
+  }
+  return [...days.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([date, totals]) => ({ date, ...totals, cashFlow: totals.income - totals.expense }));
 }
 
 function previousDate(value: string): string {

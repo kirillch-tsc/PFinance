@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useMemo, useState, type FormEvent } from "react";
 import type { AccountDraft } from "@/src/business/accounts";
-import { Button, Field, Input, MoneyInput } from "@/src/ui/system";
 import { useUnsavedChanges } from "../use-unsaved-changes";
+import styles from "./accounts.module.css";
 
 type AccountFormProps = Readonly<{
   initialValue?: AccountDraft;
@@ -52,9 +52,9 @@ export function AccountForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-5">
-      <Field label="Название" htmlFor="account-name">
-        <Input
+    <form onSubmit={handleSubmit} noValidate className={styles.form}>
+      <FormField label="Название" htmlFor="account-name">
+        <input
           id="account-name"
           name="name"
           required
@@ -62,10 +62,10 @@ export function AccountForm({
           value={draft.name}
           onChange={(event) => setDraft({ ...draft, name: event.target.value })}
         />
-      </Field>
+      </FormField>
 
-      <Field label="Валюта" htmlFor="account-currency">
-        <Input
+      <FormField label="Валюта" htmlFor="account-currency">
+        <input
           id="account-currency"
           name="currency"
           required
@@ -78,12 +78,12 @@ export function AccountForm({
           onChange={(event) => setDraft({ ...draft, currency: event.target.value.toUpperCase() })}
         />
         {currencyLocked ? (
-          <p className="mt-2 text-sm text-slate-500">Валюту нельзя изменить после появления операций.</p>
+          <p className={styles.hint}>Валюту нельзя изменить после появления операций.</p>
         ) : null}
-      </Field>
+      </FormField>
 
-      <Field label="Начальный баланс" htmlFor="account-opening-balance">
-        <MoneyInput
+      <FormField label="Начальный баланс" htmlFor="account-opening-balance">
+        <input
           id="account-opening-balance"
           name="openingBalance"
           required
@@ -92,10 +92,10 @@ export function AccountForm({
           value={draft.openingBalance}
           onChange={(event) => setDraft({ ...draft, openingBalance: event.target.value })}
         />
-      </Field>
+      </FormField>
 
-      <Field label="Дата начального баланса" htmlFor="account-opening-date">
-        <Input
+      <FormField label="Дата начального баланса" htmlFor="account-opening-date">
+        <input
           id="account-opening-date"
           name="openingBalanceDate"
           required
@@ -104,29 +104,31 @@ export function AccountForm({
           value={draft.openingBalanceDate}
           onChange={(event) => setDraft({ ...draft, openingBalanceDate: event.target.value })}
         />
-      </Field>
+      </FormField>
 
-      <p className="text-sm leading-6 text-slate-500">
+      <p className={styles.hint}>
         Изменение начального баланса или его даты влияет на будущий расчёт истории счёта.
       </p>
 
       {error ? (
-          <p role="alert" className="rounded-xl bg-[var(--danger-soft)] px-4 py-3 text-sm text-[var(--danger)]">
+          <p role="alert" className={styles.error}>
           {error}
         </p>
       ) : null}
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <Link href={cancelHref} className="rounded-xl px-5 py-3 text-center text-sm font-semibold text-[var(--text-muted)]">
+      <div className={styles.formActions}>
+        <Link href={cancelHref}>
           Отмена
         </Link>
-        <Button
+        <button
           type="submit"
           disabled={isSaving}
         >
           {isSaving ? "Сохранение…" : submitLabel}
-        </Button>
+        </button>
       </div>
     </form>
   );
 }
+
+function FormField({label,htmlFor,children}:{label:string;htmlFor:string;children:React.ReactNode}){return <div className={styles.formField}><label htmlFor={htmlFor}>{label}</label>{children}</div>}

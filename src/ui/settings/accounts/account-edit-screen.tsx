@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import type { Account, AccountDraft, AccountEditPolicy } from "@/src/business/accounts";
 import { AccountForm } from "./account-form";
 import { formatAccountError, useAccounts } from "./account-provider";
+import styles from "./accounts.module.css";
 
 export function AccountEditScreen({ accountId }: Readonly<{ accountId: string }>) {
   const router = useRouter();
@@ -40,17 +41,17 @@ export function AccountEditScreen({ accountId }: Readonly<{ accountId: string }>
   }
 
   if (error) {
-    return <p role="alert" className="m-auto rounded-xl bg-red-50 px-5 py-4 text-red-800">{error}</p>;
+    return <p role="alert" className={styles.error}>{error}</p>;
   }
 
   if (!account || !policy) {
-    return <p className="m-auto text-slate-600">Загрузка счёта…</p>;
+    return <p className={styles.status}>Загрузка счёта…</p>;
   }
 
   return (
-    <section className="mx-auto w-full max-w-xl">
-      <p className="text-sm text-slate-500">Настройки · Счета</p>
-      <h1 className="mt-1 font-serif text-3xl font-bold text-emerald-950">Редактирование счёта</h1>
+    <section className={styles.formPage}>
+      <p>Настройки · Счета</p>
+      <h1>Редактирование счёта</h1>
       <AccountForm
         initialValue={{
           name: account.name,

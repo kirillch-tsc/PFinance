@@ -9,6 +9,7 @@ import type {
 } from "@/src/business/categories";
 import { CategoryForm } from "./category-form";
 import { formatCategoryError, useCategories } from "./category-provider";
+import styles from "./categories.module.css";
 
 export function CategoryEditScreen({ categoryId }: Readonly<{ categoryId: string }>) {
   const router = useRouter();
@@ -44,16 +45,16 @@ export function CategoryEditScreen({ categoryId }: Readonly<{ categoryId: string
   }
 
   if (error) {
-    return <p role="alert" className="m-auto rounded-xl bg-red-50 px-5 py-4 text-red-800">{error}</p>;
+    return <p role="alert" className={styles.error}>{error}</p>;
   }
   if (!category || !policy) {
-    return <p className="m-auto text-slate-600">Загрузка категории…</p>;
+    return <p className={styles.status}>Загрузка категории…</p>;
   }
 
   return (
-    <section className="mx-auto w-full max-w-xl">
-      <p className="text-sm text-slate-500">Настройки · Категории</p>
-      <h1 className="mt-1 font-serif text-3xl font-bold text-emerald-950">Редактирование категории</h1>
+    <section className={styles.formPage}>
+      <p>Настройки · Категории</p>
+      <h1>Редактирование категории</h1>
       <CategoryForm
         initialValue={{ name: category.name, kind: category.kind }}
         kindLocked={!policy.canChangeKind}

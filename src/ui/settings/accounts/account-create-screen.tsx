@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import type { AccountDraft } from "@/src/business/accounts";
 import { AccountForm } from "./account-form";
 import { formatAccountError, useAccounts } from "./account-provider";
+import styles from "./accounts.module.css";
 
 export function AccountCreateScreen() {
   const router = useRouter();
@@ -19,9 +20,9 @@ export function AccountCreateScreen() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-xl">
-      <p className="text-sm text-slate-500">Настройки · Счета</p>
-      <h1 className="mt-1 font-serif text-3xl font-bold text-emerald-950">Новый счёт</h1>
+    <section className={styles.formPage}>
+      <p>Настройки · Счета</p>
+      <h1>Новый счёт</h1>
       <AccountForm
         submitLabel="Создать счёт"
         cancelHref="/settings/accounts"
