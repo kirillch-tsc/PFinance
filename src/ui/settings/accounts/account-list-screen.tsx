@@ -1,0 +1,11 @@
+"use client";
+import Link from "next/link";
+import { calculateAccountBalance } from "@/src/business/calculations";
+import { useDashboardData } from "@/src/ui/home/use-dashboard-data";
+import { useAccounts } from "./account-provider";
+import styles from "./accounts.module.css";
+
+export function AccountListScreen(){const {accounts,isLoading,loadError,refresh}=useAccounts();const dashboard=useDashboardData();const active=accounts.filter(a=>a.isActive),inactive=accounts.filter(a=>!a.isActive);return <section className={styles.page}><header><div><p>Настройки</p><h1>Счета</h1></div><Link href="/settings/accounts/new">＋ Новый счёт</Link></header>{isLoading?<Status>Загрузка счетов…</Status>:null}{loadError?<div className={styles.error}><p>{loadError}</p><button onClick={()=>void refresh()}>Повторить</button></div>:null}{!isLoading&&!loadError&&accounts.length===0?<div className={styles.empty}><span>▣</span><h2>Счетов пока нет</h2><p>Создайте первый счёт, чтобы начать учитывать финансы.</p><Link href="/settings/accounts/new">Создать счёт</Link></div>:null}{active.length?<Group title="Активные счета" accounts={active} balances={dashboard.transactions}/>:null}{inactive.length?<Group title="Неактивные счета" accounts={inactive} balances={dashboard.transactions}/>:null}</section>}
+function Group({title,accounts,balances}:{title:string;accounts:ReturnType<typeof useAccounts>["accounts"];balances:ReturnType<typeof useDashboardData>["transactions"]}){return <section className={styles.group}><h2>{title}<span>{accounts.length}</span></h2><div className={styles.grid}>{accounts.map((account,index)=><Link href={`/settings/accounts/${account.id}`} key={account.id} className={styles.account}><span className={`${styles.icon} ${index%2?styles.green:""}`}>▰</span><small>{account.currency}</small><h3 title={account.name}>{account.name}</h3><b>{formatMoney(calculateAccountBalance(account,balances),account.currency)}</b><em>{account.isActive?"Активный":"Неактивный"}</em><i>›</i></Link>)}</div></section>}
+function Status({children}:{children:React.ReactNode}){return <p className={styles.status}>{children}</p>}
+function formatMoney(units:bigint,currency:string){return `${new Intl.NumberFormat("ru-RU").format(Number(units/100n))} ${currency==="RUB"?"₽":currency}`}

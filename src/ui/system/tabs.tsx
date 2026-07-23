@@ -1,0 +1,3 @@
+"use client";
+export type TabItem = Readonly<{ id: string; label: string }>;
+export function Tabs({ items, value, onChange, label = "Разделы" }: Readonly<{ items: readonly TabItem[]; value: string; onChange: (id: string) => void; label?: string }>) { return <div role="tablist" aria-label={label} className="inline-flex rounded-xl bg-[var(--surface-muted)] p-1">{items.map((item) => <button key={item.id} role="tab" aria-selected={value === item.id} onClick={() => onChange(item.id)} className={`min-h-10 rounded-lg px-4 text-sm font-semibold transition ${value === item.id ? "bg-[var(--surface)] text-[var(--text)] shadow-sm" : "text-[var(--text-muted)] hover:text-[var(--text)]"}`}>{item.label}</button>)}</div>; }
